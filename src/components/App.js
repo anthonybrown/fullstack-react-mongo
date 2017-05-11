@@ -7,24 +7,19 @@ import PropTypes from 'prop-types';
 class App extends Component {
   state = {
     pageHeader: 'Naming Contests',
-    contests: []
+    contests: this.props.initialContests
   };
-
   componentDidMount() {
     axios.get('/api/contests')
       .then(response => {
         this.setState({
           contests: response.data.contests
         });
-      })
-      .catch(console.error);
-
+      }).catch(console.error);
   }
-
   componentWillUnmount() {
     //console.info('component unmounted.');
   }
-
   render() {
     return (
       <div className='App'>
@@ -39,9 +34,10 @@ class App extends Component {
   }
 }
 
+
 ContestPreview.propTypes = {
   contests: PropTypes.object,
+  initialContests: PropTypes.object
 };
-
 
 export default App;
