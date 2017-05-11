@@ -7,11 +7,17 @@ class App extends Component {
   state = {
     pageHeader: 'Naming Contests'
   };
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = { test: 42 };
-  // }
+
+  componentDidMount() {
+    // usually listen & make Ajax calls
+    // listen for events, listeners
+    console.info('component did mount.');
+  }
+
+  componentWillUnmount() {
+    // usually cleanup the listeners and events
+    console.info('component unmounted.');
+  }
 
   render() {
     return (
