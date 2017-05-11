@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import ContestPreview from './ContestPreview';
+import PropTypes from 'prop-types';
+import data from '../testData';
 
 class App extends Component {
-// Since we are using babel-preset-stage-2
-// we can use a shorter syntax
   state = {
-    pageHeader: 'Naming Contests'
+    pageHeader: 'Naming Contests',
+    contests: []
   };
 
   componentDidMount() {
-    // usually listen & make Ajax calls
-    // listen for events, listeners
-    console.info('component did mount.');
+    this.setState({
+      contests: data.contests
+    });
   }
 
   componentWillUnmount() {
-    // usually cleanup the listeners and events
-    console.info('component unmounted.');
+    //console.info('component unmounted.');
   }
 
   render() {
@@ -24,10 +25,18 @@ class App extends Component {
       <div className='App'>
         <Header message={this.state.pageHeader} />
         <div>
-          {this.state.test}
+          {this.state.contests.map(contest =>
+            <ContestPreview key={contest.id} {...contest} />
+          )}
         </div>
       </div>
     );
   }
 }
+
+ContestPreview.propTypes = {
+  contests: PropTypes.object,
+};
+
+
 export default App;
