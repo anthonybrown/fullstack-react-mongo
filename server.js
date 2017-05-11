@@ -19,7 +19,9 @@ server.get('/', (req, res) => {
   });
 });
 
+// API endpoints
 server.use('/api', apiRouter);
+// use static middlewares
 server.use(express.static('public'));
 
 server.listen(config.port, () => {
