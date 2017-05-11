@@ -25,9 +25,18 @@ body {
     padding: 0.25em 0.5em;
     font-weight: 900;
     background-color: #eee;
+    color: rgba(128, 166, 197, 1);
   }
 
   .contest-name {
+    color: rgba(99, 108, 119, 0.54);
     padding: 0.5em;
+    &:hover {
+      color: rgba(99, 108, 119, 1);
+    }
   }
+}
+
+.link {
+  cursor: pointer;
 }
