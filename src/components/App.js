@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Header from './Header';
 import ContestPreview from './ContestPreview';
-import PropTypes from 'prop-types';
 
 class App extends Component {
   state = {
@@ -10,12 +8,6 @@ class App extends Component {
     contests: this.props.initialContests
   };
   componentDidMount() {
-    axios.get('/api/contests')
-      .then(response => {
-        this.setState({
-          contests: response.data.contests
-        });
-      }).catch(console.error);
   }
   componentWillUnmount() {
     //console.info('component unmounted.');
@@ -33,11 +25,5 @@ class App extends Component {
     );
   }
 }
-
-
-ContestPreview.propTypes = {
-  contests: PropTypes.object,
-  initialContests: PropTypes.object
-};
 
 export default App;
