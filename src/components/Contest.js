@@ -5,7 +5,13 @@ class Contest extends Component {
   render() {
     return (
       <div className='Contest'>
-        {this.props.description}
+        <div className='contest-description'>
+          {this.props.description}
+        </div>
+        <div className='home-link link'
+          onClick={this.props.contestListClick}>
+          Contest list
+        </div>
       </div>
     );
   }
@@ -13,6 +19,7 @@ class Contest extends Component {
 
 Contest.propTypes = {
   description: PropTypes.string.isRequired,
+  contestListClick: PropTypes.func.isRequired
 };
 
 export default Contest;
