@@ -9,7 +9,7 @@ const serverRender = () =>
     .then(response => {
       return {
         initialMarkup: ReactDOMServer.renderToString(
-          <App initialContests={response.data.contests} />
+          <App initialData={response.data} />
         ),
         initialData: response.data
       };
