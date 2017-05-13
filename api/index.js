@@ -1,26 +1,60 @@
 'use strict';
 
 import express from 'express';
-import data from '../src/testData';
+import { MongoClient } from 'mongodb';
+import assert from 'assert';
+import config from '../config';
+
+let mdb;
+MongoClient.connect(config.mongodbUri, (err, db) => {
+  assert.equal(null, err);
+  mdb = db;
+});
 
 const router = express.Router();
 
-const contests = data.contests.reduce((obj, contest) => {
-  obj[contest.id] = contest;
-  return obj;
-}, {});
-
 router.get('/contests', (req, res) => {
-  res.send({
-    contests: contests
-  });
+  let contests = {};
+  mdb.collection('contests').find({})
+    .project({
+      id: 1,
+      categoryName: 1,
+      contestName: 1
+    })
+    .each((err, contest) => {
+      assert.equal(null, err);
+
+      if (!contest) { // if no more contests
+        res.send({ contests }); // return contests as an object.
+        return; // return here so the code below doesn't execute.
+      }
+
+      contests[contest.id] = contest;
+    });
 });
 
-router.get('/contests/:contestId', (req, res) => {
-  let contest = contests[req.params.contestId];
-  contest.description = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+router.get('/names/:nameIds', (req, res) => {
+  const nameIds = req.params.nameIds.split(',').map(Number);
+  let names = {};
+  mdb.collection('names').find({ id: { $in: nameIds }})
+    .each((err, name) => {
+      assert.equal(null, err);
 
-  res.send(contest);
+      if (!name) {
+        res.send({ names });
+        return; 
+      }
+
+      names[name.id] = name;
+    });
+});
+
+
+router.get('/contests/:contestId', (req, res) => {
+  mdb.collection('contests')
+     .findOne({ id: Number(req.params.contestId) })
+     .then(contest => res.send(contest))
+     .catch(console.error);
 });
 
 export default router;
